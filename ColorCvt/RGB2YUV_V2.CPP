@@ -1,3 +1,16 @@
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
+using namespace std;
+
+
+#include <fstream>
+#include <iostream>
+#include <string>
+
+
+
+
 
 #ifndef _RGB2YUV__
 
@@ -29,23 +42,17 @@ static int   YUVY_G[256];
 
 static int   YUVY_B[256];
 
- 
-
 static int   YUVU_R[256];
 
 static int   YUVU_G[256];
 
 static int   YUVU_B[256];
 
- 
-
 static int   YUVV_R[256];
 
 static int   YUVV_G[256];
 
 static int   YUVV_B[256];
-
- 
 
 static int   coff_rv[256];
 
@@ -56,6 +63,63 @@ static int   coff_gv[256];
 static int   coff_bu[256];
 
  
+
+void RGB2YUV422(unsigned char*pRGB, unsigned char*pYUV, int size);
+
+int main()
+{
+	//读取图片（使用图片的绝对路径）
+	Mat src = imread("D://opencv//Projects//openc4.1_test//test.jpg", 1);
+
+
+
+	int H = src.cols;
+	int W = src.rows;
+	int S = 8;
+
+	Mat out = cv::Mat(H, W, CV_8UC2);
+
+	//unsigned char *UYVY_TEST_DATA[1280*2*720];
+	unsigned char *UYVY_TEST_DATA[1280];
+	FILE *lpSavefile;
+	lpSavefile = fopen("UYVY-TEST", "r");
+
+
+	char *pbuf;
+	pbuf = (char *)malloc(sizeof(char) * 1280 * 720 * 2);
+
+	fread(pbuf, 1280 * 720 * 2, 1, lpSavefile);
+
+	//printf("%s", pbuf);
+
+	free(pbuf);
+
+
+
+
+	fread(UYVY_TEST_DATA, 1280, 1, lpSavefile);
+
+	//printf("%s", UYVY_TEST_DATA);
+
+	unsigned char* inputImage = (unsigned char*)(src.data);
+
+	Mat            out1 = src.clone();
+	unsigned char* outputImage1 = (unsigned char*)(out1.data);
+
+	RGB2YUV422(inputImage, outputImage1, 10 * 10 );
+
+
+
+	waitKey(0);
+
+	return 0;
+}
+
+
+
+
+
+
 
 //直接采用公式浮点计算方式
 
@@ -339,7 +403,7 @@ int  u = ((YUVU_R[r] + YUVU_G[g] + YUVU_B[b] + 128) >> 8) + 128;
 
 int  v = ((YUVV_R[r] + YUVV_G[g] + YUVV_B[b] + 128) >> 8) + 128;
 
-*pYUV = TUNEY(y);pYUV++;
+*pYUV = TUNE(y);pYUV++;
 
 //*pYUV = u < 0 ? 0 : (u > 255 ? 255 : u);pYUV++;
 
