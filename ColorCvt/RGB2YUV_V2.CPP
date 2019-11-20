@@ -125,7 +125,23 @@ int main()
 	}
 
 
-	// karl20191120-2:打印 YUV 像素值
+	//karljiang-20191120-2:写入二进制文件
+
+	const string filename = "YUV422_v2.dat";
+	ofstream outfile;
+	outfile.open(filename.c_str(), ios::binary);
+
+	if (!outfile)
+	{
+		cerr << "failed to open the file : " << filename << endl;
+		return -1;
+	}
+
+	for (int r = 0; r < out1.rows; r++)
+		outfile.write(reinterpret_cast<const char*>(out1.ptr(r)), out1.cols*out1.elemSize());
+	//outfile<<endl;
+	cout << "write to file ok!" << endl;
+
 
 
 
