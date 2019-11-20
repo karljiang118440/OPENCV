@@ -110,6 +110,26 @@ int main()
 
 
 
+	// karl20191120-1:打印 YUV 像素值
+
+	for (int i = 0; i < out1.rows; i++)
+	{
+		uchar* data = out1.ptr<uchar>(i);
+		for (int j = 0; j < out1.cols; j++)
+		{
+			//uchar val = ((uchar *)(srcImage.data + i * srcImage.step))[j];
+			printf("YUV value = %d\n", data[j]);
+		}
+		//printf("\n");
+
+	}
+
+
+	// karl20191120-2:打印 YUV 像素值
+
+
+
+
 	waitKey(0);
 
 	return 0;
